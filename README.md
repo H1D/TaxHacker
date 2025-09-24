@@ -191,6 +191,8 @@ docker exec -it postgres psql -U postgres -d taxhacker -c "INSERT INTO users (id
 docker exec -it postgres psql -U postgres -d taxhacker -c "SELECT value FROM verification ORDER BY created_at DESC LIMIT 1;"
 ```
 
+5. Seed the DB. Becasuse we skipped the normal routed DB seeding won't happedn automatically. Open `<YOUR URL>/settings/danger` and click `[Reset fields, currencies and categories]`
+
 ## ⌨️ Local Development
 
 We use:
