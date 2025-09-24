@@ -42,7 +42,7 @@ export function formatNumber(number: number) {
   }).format(number)
 }
 
-export function codeFromName(name: string, maxLength: number = 16) {
+export function codeFromName(name: string, maxLength: number = 32) {
   const code = slugify(name, {
     replacement: "_",
     lower: true,
