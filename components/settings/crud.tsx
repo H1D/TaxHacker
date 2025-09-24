@@ -52,6 +52,7 @@ export function CrudTable<T extends { [key: string]: any }>({ items, columns, on
         <input
           type="checkbox"
           checked={editingItem[column.key]}
+          aria-label={String(column.label)}
           onChange={(e) =>
             setEditingItem({
               ...editingItem,
@@ -65,6 +66,7 @@ export function CrudTable<T extends { [key: string]: any }>({ items, columns, on
         <select
           value={editingItem[column.key]}
           className="p-2 rounded-md border bg-transparent"
+          aria-label={String(column.label)}
           onChange={(e) =>
             setEditingItem({
               ...editingItem,
@@ -102,6 +104,7 @@ export function CrudTable<T extends { [key: string]: any }>({ items, columns, on
           <Input
             type="text"
             value={(editingItem[column.key] as string) || ""}
+            aria-label={String(column.label)}
             onChange={(e) =>
               setEditingItem({
                 ...editingItem,
@@ -118,6 +121,7 @@ export function CrudTable<T extends { [key: string]: any }>({ items, columns, on
       <Input
         type="text"
         value={editingItem[column.key] || ""}
+        aria-label={String(column.label)}
         onChange={(e) =>
           setEditingItem({
             ...editingItem,
@@ -134,6 +138,7 @@ export function CrudTable<T extends { [key: string]: any }>({ items, columns, on
         <input
           type="checkbox"
           checked={Boolean(newItem[column.key] || column.defaultValue)}
+          aria-label={String(column.label)}
           onChange={(e) =>
             setNewItem({
               ...newItem,
@@ -147,6 +152,7 @@ export function CrudTable<T extends { [key: string]: any }>({ items, columns, on
         <select
           value={String(newItem[column.key] || column.defaultValue || "")}
           className="p-2 rounded-md border bg-transparent"
+          aria-label={String(column.label)}
           onChange={(e) =>
             setNewItem({
               ...newItem,
@@ -181,24 +187,26 @@ export function CrudTable<T extends { [key: string]: any }>({ items, columns, on
               }
             />
           </div>
-            <Input
-              type="text"
-              value={String(newItem[column.key] || column.defaultValue || "")}
-              onChange={(e) =>
-                setNewItem({
-                  ...newItem,
-                  [column.key]: e.target.value,
-                })
-              }
-              placeholder="#FFFFFF"
-            />
-          </div>
+          <Input
+            type="text"
+            value={String(newItem[column.key] || column.defaultValue || "")}
+            aria-label={String(column.label)}
+            onChange={(e) =>
+              setNewItem({
+                ...newItem,
+                [column.key]: e.target.value,
+              })
+            }
+            placeholder="#FFFFFF"
+          />
+        </div>
       )
     }
     return (
       <Input
         type={column.type || "text"}
         value={String(newItem[column.key] || column.defaultValue || "")}
+        aria-label={String(column.label)}
         onChange={(e) =>
           setNewItem({
             ...newItem,
