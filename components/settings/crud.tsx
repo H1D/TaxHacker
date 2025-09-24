@@ -287,10 +287,10 @@ export function CrudTable<T extends { [key: string]: any }>({ items, columns, on
                 <div className="flex gap-2">
                   {editingId === (item.code || item.id) ? (
                     <>
-                      <Button size="sm" onClick={() => handleEdit(item.code || item.id)}>
+                      <Button size="sm" onClick={() => handleEdit(item.code || item.id)} aria-label="Save changes">
                         Save
                       </Button>
-                      <Button size="sm" variant="outline" onClick={() => setEditingId(null)}>
+                      <Button size="sm" variant="outline" onClick={() => setEditingId(null)} aria-label="Cancel editing">
                         Cancel
                       </Button>
                     </>
@@ -304,12 +304,18 @@ export function CrudTable<T extends { [key: string]: any }>({ items, columns, on
                             startEditing(item)
                             setIsAdding(false)
                           }}
+                          aria-label={`Edit ${String(item.name || item.code || 'item')}`}
                         >
                           <Edit />
                         </Button>
                       )}
                       {item.isDeletable && (
-                        <Button variant="ghost" size="icon" onClick={() => handleDelete(item.code || item.id)}>
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          onClick={() => handleDelete(item.code || item.id)}
+                          aria-label={`Delete ${String(item.name || item.code || 'item')}`}
+                        >
                           <Trash2 />
                         </Button>
                       )}
@@ -328,10 +334,10 @@ export function CrudTable<T extends { [key: string]: any }>({ items, columns, on
               ))}
               <TableCell>
                 <div className="flex gap-2">
-                  <Button size="sm" onClick={handleAdd}>
+                  <Button size="sm" onClick={handleAdd} aria-label="Save new item">
                     Save
                   </Button>
-                  <Button size="sm" variant="outline" onClick={() => setIsAdding(false)}>
+                  <Button size="sm" variant="outline" onClick={() => setIsAdding(false)} aria-label="Cancel adding new item">
                     Cancel
                   </Button>
                 </div>
@@ -346,6 +352,7 @@ export function CrudTable<T extends { [key: string]: any }>({ items, columns, on
             setIsAdding(true)
             setEditingId(null)
           }}
+          aria-label="Add new item"
         >
           Add New
         </Button>
