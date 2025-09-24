@@ -148,21 +148,47 @@ services:
 
 Configure TaxHacker for your specific needs with these environment variables:
 
-| Variable | Required | Description | Example |
-|----------|----------|-------------|---------|
-| `UPLOAD_PATH` | Yes | Local directory for file uploads and storage | `./data/uploads` |
-| `DATABASE_URL` | Yes | PostgreSQL connection string | `postgresql://user@localhost:5432/taxhacker` |
-| `PORT` | No | Port to run the application on | `7331` (default) |
-| `BASE_URL` | No | Base URL for the application | `http://localhost:7331` |
-| `SELF_HOSTED_MODE` | No | Set to "true" for self-hosting: enables auto-login, custom API keys, and additional features | `true` |
-| `DISABLE_SIGNUP` | No | Disable new user registration on your instance | `false` |
-| `BETTER_AUTH_SECRET` | Yes | Secret key for authentication (minimum 16 characters) | `your-secure-random-key` |
+| Variable             | Required | Description                                                                                  | Example                                      |
+| -------------------- | -------- | -------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| `UPLOAD_PATH`        | Yes      | Local directory for file uploads and storage                                                 | `./data/uploads`                             |
+| `DATABASE_URL`       | Yes      | PostgreSQL connection string                                                                 | `postgresql://user@localhost:5432/taxhacker` |
+| `PORT`               | No       | Port to run the application on                                                               | `7331` (default)                             |
+| `BASE_URL`           | No       | Base URL for the application                                                                 | `http://localhost:7331`                      |
+| `SELF_HOSTED_MODE`   | No       | Set to "true" for self-hosting: enables auto-login, custom API keys, and additional features | `true`                                       |
+| `DISABLE_SIGNUP`     | No       | Disable new user registration on your instance                                               | `false`                                      |
+| `BETTER_AUTH_SECRET` | Yes      | Secret key for authentication (minimum 16 characters)                                        | `your-secure-random-key`                     |
 
 You can also configure LLM provider settings in the application or via environment variables:
 
 - **OpenAI**: `OPENAI_MODEL_NAME` and `OPENAI_API_KEY`
 - **Google Gemini**: `GOOGLE_MODEL_NAME` and `GOOGLE_API_KEY`
 - **Mistral**: `MISTRAL_MODEL_NAME` and `MISTRAL_API_KEY`
+
+### 🌐 Internet-exposed self-hosted instance
+
+If you want to expose your instance to the internet and still keep it protected by built‑in login there is a hacky way to do so:
+
+1. Run with these env vars:
+
+   ```env
+   SELF_HOSTED_MODE=false
+   DISABLE_SIGNUP=true
+   BASE_URL=<URL you'll use to access Tax Hacker>
+   ```
+
+2. Create your user directly in the database (replace email as needed):
+
+```bash
+docker exec -it postgres psql -U postgres -d taxhacker -c "INSERT INTO users (id, email, name, membership_plan, is_email_verified, updated_at) VALUES ('6f5b4f8e-6f7a-4c3d-9b8b-7f2d2d61a9c3','mail@example.com','Owner','unlimited', true, now());"
+```
+
+3. Open your instance in the browser, click Sign In, and enter `mail@example.com`.
+
+4. Fetch the latest OTP from the DB and use it to sign in:
+
+```bash
+docker exec -it postgres psql -U postgres -d taxhacker -c "SELECT value FROM verification ORDER BY created_at DESC LIMIT 1;"
+```
 
 ## ⌨️ Local Development
 
